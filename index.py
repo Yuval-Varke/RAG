@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-pdf_path = Path("Linux.pdf")
+pdf_path = Path("nodejs.pdf")
 
 #Now Load this file in the python program
 loader = PyPDFLoader(file_path=pdf_path)
@@ -15,19 +15,19 @@ docs = loader.load()
 
 # Split the doc into smaller chunks
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000, 
-    chunk_overlap=400
+    chunk_size=500, 
+    chunk_overlap=50
 )
 chunks = text_splitter.split_documents(documents=docs)
 
 #Vector Embeddings
-embedding_model = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2-preview")
+embedding_model = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2")
 
 vector_store = QdrantVectorStore.from_documents(
     documents=chunks,
     embedding=embedding_model,
     url="http://localhost:6333",
-    collection_name="linux_docs"
+    collection_name="nodejs_docs"
 )
 
 print("Indexing of documents is done...")
